@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_news/model/articles.dart';
-import 'package:flutter_application_news/service/api_service.dart';
-
+import 'package:flutter_application_news/provider/news_provider.dart';
+import 'package:provider/provider.dart';
 class ListNews extends StatefulWidget {
   const ListNews({super.key});
 
@@ -10,12 +10,10 @@ class ListNews extends StatefulWidget {
 }
 
 class _ListNewsState extends State<ListNews> {
-  late Future<ArticlesResult> _article;
 
   @override
   void initState() {
     super.initState();
-    _article = ApiService().topHeadlines();
   }
 
   @override
@@ -24,26 +22,37 @@ class _ListNewsState extends State<ListNews> {
       appBar: AppBar(
         title: const Text("News App"),
       ),
-      body: FutureBuilder(
-        future: _article,
-        builder: (context, snapshot) {
-          var state = snapshot.connectionState;
-          if (state != ConnectionState.done) {
+      body: Consumer<NewsProvider>(
+        builder: (context, state, _) {
+          if (state.state == ResultState.loading) {
             return const Center(child: CircularProgressIndicator());
+          } else if (state.state == ResultState.hasData) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.result.articles.length,
+              itemBuilder: (context, index) {
+                var article = state.result.articles[index];
+                return ArticleCard(article: article);
+              },
+            );
+          } else if (state.state == ResultState.noData) {
+            return Center(
+              child: Material(
+                child: Text(state.message),
+              ),
+            );
+          } else if (state.state == ResultState.error) {
+            return Center(
+              child: Material(
+                child: Text(state.message),
+              ),
+            );
           } else {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  var article = snapshot.data?.articles[index];
-                  return ArticleCard(
-                    article: article!,
-                  );
-                },
-                itemCount: snapshot.data?.articles.length,
-              );
-            } else {
-              return const Text("");
-            }
+            return const Center(
+              child: Material(
+                child: Text(''),
+              ),
+            );
           }
         },
       ),
