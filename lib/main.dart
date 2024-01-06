@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_news/view/web_view_news.dart';
 import 'model/articles.dart';
 import 'view/detail_news.dart';
 import 'view/list_news.dart';
@@ -15,9 +16,12 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'News App',
       routes: {
-        '/': (context) => ListNews(),
+        '/': (context) => const ListNews(),
         '/detailNews': (context) => DetailNews(
             article: ModalRoute.of(context)?.settings.arguments as Article),
+        '/webNews': (context) => NewsView(
+              article: ModalRoute.of(context)?.settings.arguments as Article,
+            ),
       },
       initialRoute: '/',
     );

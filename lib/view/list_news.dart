@@ -21,20 +21,9 @@ class _ListNewsState extends State<ListNews> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: ListView.builder(
-      //   itemBuilder: (context, index) {
-      //     return ListTile(
-      //       title: Text("Mantap"),
-      //       leading: Text("Data Leading"),
-      //       subtitle: Text("Sub tittle nya"),
-      //       trailing: Text("Buntut"),
-      //       onTap: () {
-      //         Navigator.pushNamed(context, '/detailNews');
-      //       },
-      //     );
-      //   },
-      //   itemCount: 20,
-      // ),
+      appBar: AppBar(
+        title: const Text("News App"),
+      ),
       body: FutureBuilder(
         future: _article,
         builder: (context, snapshot) {
@@ -53,7 +42,7 @@ class _ListNewsState extends State<ListNews> {
                 itemCount: snapshot.data?.articles.length,
               );
             } else {
-              return Text("");
+              return const Text("");
             }
           }
         },

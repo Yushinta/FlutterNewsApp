@@ -10,7 +10,7 @@ class DetailNews extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News App'),
+        title: const Text('News Detail'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -52,8 +52,8 @@ class DetailNews extends StatelessWidget {
                   ElevatedButton(
                     child: const Text('Read more'),
                     onPressed: () {
-                      // Navigator.pushNamed(context, ArticleWebView.routeName,
-                      //     arguments: article.url);
+                      Navigator.pushNamed(context, '/webNews',
+                          arguments: article);
                     },
                   ),
                 ],
