@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 import 'model/articles.dart';
 import 'view/detail_news.dart';
 import 'view/list_news.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() {
+  tz.initializeTimeZones();
   runApp(const MainApp());
 }
 

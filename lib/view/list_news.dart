@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_news/model/articles.dart';
 import 'package:flutter_application_news/provider/news_provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+
 class ListNews extends StatefulWidget {
   const ListNews({super.key});
 
@@ -10,10 +12,28 @@ class ListNews extends StatefulWidget {
 }
 
 class _ListNewsState extends State<ListNews> {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  Future<void> initNotif() async {
+    var initializationSettingsAndroid =
+        const AndroidInitializationSettings('app_icon');
+
+    await flutterLocalNotificationsPlugin.initialize(
+      InitializationSettings(android: initializationSettingsAndroid),
+      onDidReceiveNotificationResponse: (NotificationResponse details) async {
+        final payload = details.payload;
+        if (payload != null) {
+          print('notification payload: $payload');
+        }
+      },
+    );
+  }
 
   @override
   void initState() {
     super.initState();
+    initNotif();
   }
 
   @override
